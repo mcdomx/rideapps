@@ -1,0 +1,47 @@
+footer {
+  padding: 15px 15px 50px 15px;
+  color: orange;
+  /* background-color: darkgrey; */
+}
+
+footer {
+  height: 6vh;
+}
+
+header {
+  font-size: 1.5em;
+  height: 75px;
+}
+
+body {
+  margin-top: 70px;
+  margin-bottom: 7vh;
+}
+
+a:hover {
+    text-decoration: none;
+    color: darkblue;
+}
+
+
+.route_header {
+  padding: 5px;
+  margin: 5px;
+  background-color: lightblue;
+}
+
+.ride_header {
+  padding: 5px;
+  margin: 5px;
+  background-color: lightblue;
+}
+
+.self_chatbox {
+  background-color: #368ef2;
+  color: white;
+}
+
+.other_chatbox {
+  background-color: lightgrey;
+  color: black;
+}

@@ -1,0 +1,26 @@
+{% extends 'groupride/template.html' %}
+
+{% block title %}Routes{% endblock %}
+
+{% block body %}
+  <div class="container">
+    <h2>Routes</h2>
+
+    <div class="panel-group">
+    {% for route in routes %}
+
+    <a href="/route/{{route.id}}">
+      <div class="route_header border rounded">
+        <span class=""><strong>{{route.route_name}}</strong></span>
+        <span class="">Origin: {{route.origin}} </span>
+        <span class="">{{route.miles}} miles</span>
+        <span class="">{{route.vertical_feet}} feet</span>
+      </div>
+    </a>
+
+
+    {% endfor %}
+    </div> <!-- end panel group -->
+
+  </div>
+{% endblock %}

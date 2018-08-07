@@ -1,0 +1,108 @@
+{% extends 'groupride/template.html' %}
+
+{% block title %}Ride{% endblock %}
+
+{% block body %}
+  <div class="container">
+    <h2>Ride</h2>
+
+    {% if ride.private is True and user not in ride.invited_riders.all %}
+      <div class="alert alert-danger">This is a private ride.</div>
+      <script>
+        var early_exit = true;
+      </script>
+    {% else %}
+      <!-- RIDE HEADER -->
+      <div class="ride_header border rounded" style="min-width: 20rem; max-width: 50rem">
+        <div>
+          <h3>{{ride.ride_name}}
+            {% if ride.private is True %}
+              <span class="badge badge-pill badge-warning">Private</span>
+            {% else %}
+              <span class="badge badge-pill badge-light">Public</span>
+            {% endif %}
+          </h3>
+          <div>Organizer: {{ride.created_by.first_name|slice:":1" }}.{{ride.created_by.last_name}} </div>
+        </div>
+        <div>
+          <span class="">Departs: {{ ride.ride_date|date:"SHORT_DATE_FORMAT" }} {{ ride.ride_date|time:"TIME_FORMAT" }} </span>
+        </div>
+        <div>Route: {{ride.route.route_name}}
+          {% if ride.route.gpxfile %}
+          <a href={{ride.route.gpxfile}} download>
+            <span class="badge badge-pill badge-secondary">Download GPX File</span>
+          </a>
+          {% endif %}
+        </div>
+        <div>
+          <span class="">{{ride.route.miles}} miles </span>
+          <span class="">{{ride.route.vertical_feet}} feet</span>
+        </div>
+      </div>
+      <!-- END RIDE HEADER -->
+
+      <!-- CONFIRMATION BLOCK -->
+      {% if user.is_authenticated %}
+        <!-- set confirmation row with javascript to allow toggling without screen refresh -->
+        <div id="confirmation" class="container border border rounded ml-1 mr-0 my-2" style="min-width: 20rem; max-width: 50rem">
+          <div class="row my-2" style="width: 100%">
+            <h5 id="conf_status" class="col-7">You havn't confirmed this ride</h5>
+            <button type="button" id="btn_confirm" class="btn btn-success col-5 mr-0">Join</button>
+          </div>
+        </div>
+      {% endif %}
+      <!-- END CONFIRMATION BLOCK -->
+
+      <!-- CONFIRMED RIDERS -->
+
+      <a class="" data-toggle="collapse" href="#confirmed_block" style="text-align: center; vertical-align: middle;">
+        <div id="confirmed" class="container border bg-success rounded ml-1 mr-0 my-2" style="min-width: 20rem; max-width: 50rem">
+          <h3>Confirmed Riders</h3>
+        </div>
+      </a>
+
+
+
+      <div id="confirmed_block" class="collapse container ml-1 mr-0 my-2" style="min-width: 20rem; max-width: 50rem">
+        <div id="confirmed_list" class="card card-body">
+          list of confirmed riders.
+        </div>
+      </div>
+
+      <!-- END CONFIRMED RIDERS -->
+
+      <!-- COMMENTS SECTION -->
+      <div class="container border border rounded py-2 ml-1 mr-0" style="min-width: 20rem; max-width: 50rem">
+
+        <!-- COMMENTS -->
+        <div id="post_listing" class="container mb-2" style="overflow: scroll; height:40vh;"></div>
+        <!-- END COMMENTS -->
+
+        <!-- ADD POST -->
+        <div class="row">
+          <div class="col align-self-end">
+            <div id="frm_add_post">
+              <div class="input-group mb-3">
+                <input type="text" id="txt_add_post" class="form-control" placeholder="add message ... ">
+                <div class="input-group-append">
+                  <button type="button" id="btn_add_post" class="btn btn-success" disabled=true>Post</button>
+                </div>
+              </div> <!-- end input group -->
+            </div> <!-- end form -->
+          </div> <!-- end col for comment post -->
+        </div> <!-- END ADD POST -->
+
+      </div> <!-- END COMMENTS -->
+    {% endif %}
+  </div> <!-- END PAGE CONTAINER -->
+
+  <!-- script allows templating variables to be accessible in javascript -->
+  <script>
+    var ride_id = {{ ride.id }};
+    var user_id = '{{ user.username }}';
+    var early_exit = false;
+  </script>
+
+  <script src="../static/groupride/ride.js"></script>
+
+{% endblock %}
