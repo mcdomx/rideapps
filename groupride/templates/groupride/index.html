@@ -4,11 +4,13 @@
 
 {% block body %}
   <div class="container">
-    <h2>Group Ride Home Page</h2>
+    <h2>Dashboard</h2>
 
     {% if user.is_authenticated %}
+    <h3>{{user.first_name}} {{user.last_name}} ({{user.username}})</h3>
+
       <div class="panel-group">
-      <h3>Confirmed Rides</h3>
+      <h4>Confirmed Rides</h4>
 
 
           {% for ride in upcoming_rides %}
@@ -58,7 +60,7 @@
 
         </div> <!-- end panel group -->
 
-        <h3>Unconfirmed Invitations</h3>
+        <h4>Unconfirmed Invitations</h4>
 
         {% for ride in unconfirmed_rides %}
           {% if user not in ride.confirmed_riders.all %}
@@ -104,7 +106,7 @@
 
     {% else %}
 
-      <div>Create an account or login to see rides.</div>
+      <div>Create an account or login to see your personal dashboard.</div>
 
     {% endif %}
 

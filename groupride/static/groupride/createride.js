@@ -7,6 +7,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.getElementById('btn_invite_rider').onclick = add_rider_to_invite_list;
 
+  document.getElementById('invite_select').onchange = () => {
+    if (invite_select.selectedIndex) {
+      document.getElementById('btn_invite_rider').disabled = false;
+    } else {
+      document.getElementById('btn_invite_rider').disabled = true;
+    }
+
+  }
+
   setup_blank_ride();
 
 
@@ -39,11 +48,14 @@ function setup_blank_ride () {
 
 function toggle_private_ride() {
 
+  // set back to default status of list
+  invite_select.selectedIndex = 0;
+
   ckbox = document.getElementById('ckbox_private');
   if (ckbox.checked) {
     private_on = true;
     document.getElementById('invite_select').disabled = false;
-    document.getElementById('btn_invite_rider').disabled = false;
+    document.getElementById('btn_invite_rider').disabled = true;
     document.getElementById('invited_list').hidden = false;
 
   } else {
@@ -88,6 +100,10 @@ function add_rider_to_invite_list () {
   //remove user from list of people that can be invited
   sel_item = document.querySelector(`option[value=${rider_id}`);
   sel_item.disabled = true;
+
+  // set back to default status of list
+  invite_select.selectedIndex = 0;
+  document.getElementById('btn_invite_rider').disabled = true;
 }
 
 

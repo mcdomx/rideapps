@@ -27,16 +27,33 @@ def index(request):
 
 
 def create_ride(request):
-    routes = Route.objects.values('id', 'route_name','miles','vertical_feet')
-    users = User.objects.all()
-    context = {
-        'routes': routes,
-        'users': users,}
+    if request.user.is_authenticated:
+        routes = Route.objects.values('id', 'route_name','miles','vertical_feet')
+        users = User.objects.all()
+        context = {
+            'status': 'success',
+            'routes': routes,
+            'users': users,}
+        return render(request, "groupride/create_ride.html", context)
+
+    else:
+        context = {
+            'status': False
+            }
+
     return render(request, "groupride/create_ride.html", context)
 
 
 def create_route(request):
-    context = {}
+    if request.user.is_authenticated:
+        context = {
+            'status': 'success'
+        }
+    else:
+        context = {
+            'status': False
+        }
+
     return render(request, "groupride/create_route.html", context)
 
 
@@ -74,8 +91,13 @@ def get_reviews(request):
 
     reviews_dict = {}
     for r in reviews:
+        if r.user.first_name is None or r.user.last_name is None:
+            user_text = f'{r.user.username}'
+        else:
+            user_text = f'{r.user.first_name[0]}. {r.user.last_name}'
+
         reviews_dict[r.id] = {
-            "user": f'{r.user.first_name} {r.user.last_name}',
+            "user": user_text,
             "date": r.date,
             "text": r.text,
             "rating": r.rating
@@ -246,8 +268,13 @@ def get_ride_comments(request):
 
     comments_dict = {}
     for r in comments:
+        if r.user.first_name is None or r.user.last_name is None:
+            user_text = f'{r.user.username}'
+        else:
+            user_text = f'{r.user.first_name[0]}. {r.user.last_name}'
+
         comments_dict[r.id] = {
-            "user": f'{r.user.first_name} {r.user.last_name}',
+            "user": user_text,
             "user_id": r.user.username,
             "date": r.date,
             "text": r.text,
@@ -267,7 +294,12 @@ def get_confirmed_riders(request):
 
     context = {}
     for r in confirmed_riders:
-        context[r.username] = f'{r.first_name} {r.last_name}'
+        if r.user.first_name is None or r.user.last_name is None:
+            user_text = f'{r.user.username}'
+        else:
+            user_text = f'{r.user.first_name[0]}. {r.user.last_name}'
+
+        context[r.username] = user_text
 
     return JsonResponse(context)
 

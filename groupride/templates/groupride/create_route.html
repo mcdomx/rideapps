@@ -6,6 +6,10 @@
   <div class="container">
     <h2>Create Route</h2>
 
+    {% if not status %}
+      <h5>Create and account or login to create routes.</h5>
+    {% else %}
+
     <div hidden id="create_route_message">
       <span id="headline"><strong></strong></span><span id="error"></span>
     </div>
@@ -61,7 +65,7 @@
 
   </div> <!-- end page container -->
 
-    <script src="../static/groupride/createroute.js"></script>
-    
+  <script src="../static/groupride/createroute.js"></script>
+  {% endif %}
 
 {% endblock %}

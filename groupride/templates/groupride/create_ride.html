@@ -6,6 +6,10 @@
 <div class="container">
   <h2>Create Group Ride</h2>
 
+  {% if not status %}
+    <h5>Create and account or login to create rides.</h5>
+  {% else %}
+
   <div hidden id="create_ride_message">
     <span id="headline"><strong></strong></span><span id="error"></span>
   </div>
@@ -97,4 +101,6 @@
 </script>
 
 <script src="../static/groupride/createride.js"></script>
+
+{% endif %}
 {% endblock %}
