@@ -1,27 +1,32 @@
 // ########################  begin DOMContentLoaded ########################
 document.addEventListener('DOMContentLoaded', () => {
   // wait till page loads before setting up javascript elements
-  // document.getElementById('btn_create_ride').onclick = create_ride;
 
+  setup_review_elements();
+  load_reviews();
+
+});
+// ########################  end DOMContentLoaded ########################
+
+function setup_review_elements() {
   // enable display post review button when text is entered
   txt = document.querySelector('#txt_add_review');
   btn = document.querySelector('#btn_add_review');
-  txt.onkeyup = () => {
-      if (txt.value.length > 1)
+  txt.onkeyup = (e) => {
+      if (txt.value.length > 1) {
           btn.disabled = false;
-      else
+          if (e.keyCode == 13) { add_review(); }; //allow enter key to post message
+      } else {
           btn.disabled = true;
+          if (e.keyCode == 13) { }; //disallow enter from posting message
+      }
   } // end onkeyup
 
   btn.onclick = () => {
     add_review();
   }
 
-  load_reviews();
-
-});
-// ########################  end DOMContentLoaded ########################
-
+} // end setup_review_elements()
 
 function add_review() {
     const add_review = new XMLHttpRequest();
@@ -39,9 +44,11 @@ function add_review() {
       const response = JSON.parse(add_review.responseText);
 
       if (response.success) {
-        // clear form
+        // clear form and disable button
         document.getElementById('rating').selectedIndex = 0;
-        t.reset;
+        t.value = "";
+        btn = document.querySelector('#btn_add_review');
+        btn.disabled = true;
 
         // clear reviews and then re-get reviews
         load_reviews();

@@ -2,6 +2,8 @@
 document.addEventListener('DOMContentLoaded', () => {
   // wait till page loads before setting up javascript elements
 
+  // user has attempted to directly navigate to a private ride that they are not
+  // invited to.
   if (early_exit) {
     return;
   }
@@ -15,15 +17,10 @@ document.addEventListener('DOMContentLoaded', () => {
 // ########################  end DOMContentLoaded ########################
 
 function setup_confirmation_elements() {
-
   btn = document.getElementById('btn_confirm');
   btn.onclick = () => {
     toggle_confirmation();
-
   }
-
-  // set_confirmation(false);
-
 } // end setup_confirmation_elements()
 
 function load_confirmed_riders() {
@@ -131,11 +128,14 @@ function setup_chat_elemnts() {
   txt_add_post = document.getElementById('txt_add_post');
   btn_add_post = document.getElementById('btn_add_post');
 
-  txt_add_post.onkeyup = () => {
-      if (txt_add_post.value.length > 1)
+  txt_add_post.onkeyup = (e) => {
+      if (txt_add_post.value.length > 1) {
           btn_add_post.disabled = false;
-      else
+          if (e.keyCode == 13) { add_post(); }; //allow enter key to post message
+      } else {
           btn_add_post.disabled = true;
+          if (e.keyCode == 13) { }; //disallow enter from posting message
+      }
   } // end onkeyup
 
   btn_add_post.onclick = () => {
@@ -161,8 +161,8 @@ function add_post() {
 
 
       if (response.success == true) {
-        // clear form
-        t.value="";
+        t.value=""; //clear text box
+        btn_add_post.disabled = true; //disable post button
 
         // clear reviews and then re-get reviews
         load_posts(ride_id);

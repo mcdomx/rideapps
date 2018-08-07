@@ -91,17 +91,18 @@ def get_reviews(request):
 
     reviews_dict = {}
     for r in reviews:
-        if r.user.first_name is None or r.user.last_name is None:
-            user_text = f'{r.user.username}'
-        else:
+        user_text = ""
+        try:
             user_text = f'{r.user.first_name[0]}. {r.user.last_name}'
-
-        reviews_dict[r.id] = {
-            "user": user_text,
-            "date": r.date,
-            "text": r.text,
-            "rating": r.rating
-        }
+        except:
+            user_text = f'{r.user.username}'
+        finally:
+            reviews_dict[r.id] = {
+                "user": user_text,
+                "date": r.date,
+                "text": r.text,
+                "rating": r.rating
+            }
 
     context = {
         "reviews": reviews_dict,
@@ -268,17 +269,18 @@ def get_ride_comments(request):
 
     comments_dict = {}
     for r in comments:
-        if r.user.first_name is None or r.user.last_name is None:
-            user_text = f'{r.user.username}'
-        else:
+        user_text = ""
+        try:
             user_text = f'{r.user.first_name[0]}. {r.user.last_name}'
-
-        comments_dict[r.id] = {
-            "user": user_text,
-            "user_id": r.user.username,
-            "date": r.date,
-            "text": r.text,
-        }
+        except:
+            user_text = f'{r.user.username}'
+        finally:
+            comments_dict[r.id] = {
+                "user": user_text,
+                "user_id": r.user.username,
+                "date": r.date,
+                "text": r.text,
+            }
 
     context = {
         "comments": comments_dict,
@@ -294,12 +296,13 @@ def get_confirmed_riders(request):
 
     context = {}
     for r in confirmed_riders:
-        if r.user.first_name is None or r.user.last_name is None:
-            user_text = f'{r.user.username}'
-        else:
-            user_text = f'{r.user.first_name[0]}. {r.user.last_name}'
-
-        context[r.username] = user_text
+        user_text = ""
+        try:
+            user_text = f'{r.first_name[0]}. {r.last_name}'
+        except:
+            user_text = f'{r.username}'
+        finally:
+            context[r.username] = user_text
 
     return JsonResponse(context)
 
