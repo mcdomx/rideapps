@@ -12,6 +12,8 @@ document.addEventListener('DOMContentLoaded', () => {
 // send current cart to server
 function create_route() {
 
+  document.getElementById('btn_create_route').disabled = true;
+
   const create_route = new XMLHttpRequest();
   create_route.open('POST', '/create_new_route');
   create_route.setRequestHeader("X-CSRFToken", CSRF_TOKEN);
@@ -43,6 +45,7 @@ function create_route() {
     if ( message.success == true ) {
       document.getElementById("frm_create_route").reset();
       document.getElementById("txt_gpxfile").innerHTML = "upload a GPX file ... "
+      document.getElementById('btn_create_route').disabled = false;
     }
   } //end onload
 

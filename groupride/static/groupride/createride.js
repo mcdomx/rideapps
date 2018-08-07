@@ -1,10 +1,18 @@
 // ########################  begin DOMContentLoaded ########################
 document.addEventListener('DOMContentLoaded', () => {
   // wait till page loads before setting up javascript elements
+
+  setup_page_elements();
+  setup_blank_ride();
+
+});
+// ########################  end DOMContentLoaded ########################
+
+
+function setup_page_elements() {
+
   document.getElementById('btn_create_ride').onclick = create_ride;
-
   document.getElementById('ckbox_private').onchange = toggle_private_ride;
-
   document.getElementById('btn_invite_rider').onclick = add_rider_to_invite_list;
 
   document.getElementById('invite_select').onchange = () => {
@@ -13,16 +21,9 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       document.getElementById('btn_invite_rider').disabled = true;
     }
-
   }
 
-  setup_blank_ride();
-
-
-
-});
-// ########################  end DOMContentLoaded ########################
-
+} //end setup_page_elements()
 
 function setup_blank_ride () {
 
@@ -110,6 +111,8 @@ function add_rider_to_invite_list () {
 // send current cart to server
 function create_ride() {
 
+  document.getElementById('btn_create_ride').disabled = true;
+
   const create_ride = new XMLHttpRequest();
   create_ride.open('POST', '/create_new_ride');
   create_ride.setRequestHeader("X-CSRFToken", CSRF_TOKEN);
@@ -161,6 +164,7 @@ function create_ride() {
     // clear form if form operation was successful
     if ( message.success == true ) {
       document.getElementById("frm_create_ride").reset();
+      document.getElementById('btn_create_ride').disabled = false;
       setup_blank_ride();
     }
   } //end onload
