@@ -267,19 +267,9 @@ def get_confirmed_riders(request):
 
     context = {}
     for r in confirmed_riders:
-        context[r.username] = f'{r.first_name[0]}. {r.last_name}'
+        context[r.username] = f'{r.first_name} {r.last_name}'
 
     return JsonResponse(context)
-
-# if request.method == 'POST' and request.FILES['myfile']:
-#         myfile = request.FILES['myfile']
-#         fs = FileSystemStorage()
-#         filename = fs.save(myfile.name, myfile)
-#         uploaded_file_url = fs.url(filename)
-#         return render(request, 'core/simple_upload.html', {
-#             'uploaded_file_url': uploaded_file_url
-#         })
-
 
 
 # check if route already exists and create it if it does not
