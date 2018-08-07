@@ -23,8 +23,8 @@ from django.urls import re_path
 from django.views.static import serve
 
 urlpatterns = [
-    path("", include("groupride.urls")),
     path("admin/", admin.site.urls),
+    path("", include("groupride.urls")),
     path("", include('django.contrib.auth.urls')),
     re_path(r'^route/(?P<path>.*)$', serve, {
         'document_root': settings.MEDIA_ROOT,
