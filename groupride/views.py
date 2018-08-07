@@ -75,7 +75,7 @@ def get_reviews(request):
     reviews_dict = {}
     for r in reviews:
         reviews_dict[r.id] = {
-            "user": f'{r.user.first_name[0]}. {r.user.last_name}',
+            "user": f'{r.user.first_name} {r.user.last_name}',
             "date": r.date,
             "text": r.text,
             "rating": r.rating
@@ -247,7 +247,7 @@ def get_ride_comments(request):
     comments_dict = {}
     for r in comments:
         comments_dict[r.id] = {
-            "user": f'{r.user.first_name[0]}. {r.user.last_name}',
+            "user": f'{r.user.first_name} {r.user.last_name}',
             "user_id": r.user.username,
             "date": r.date,
             "text": r.text,
