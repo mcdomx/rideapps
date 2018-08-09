@@ -2,8 +2,11 @@
 document.addEventListener('DOMContentLoaded', () => {
   // wait till page loads before setting up javascript elements
 
+if (authenticated == true) {
   setup_review_elements();
-  load_reviews();
+}
+
+load_reviews();
 
 });
 // ########################  end DOMContentLoaded ########################
@@ -167,16 +170,20 @@ function load_reviews() {
       //extract JSON data from request
       const response = JSON.parse(get_reviews.responseText);
 
-      //clear any reviews already listed
-      listing = document.querySelector('#reviews_listing');
-      while (listing.firstChild) {
-        listing.removeChild(listing.firstChild);
+      // only list reviews if any exist
+      if (Object.keys(response.reviews).length > 0 ) {
+        //clear any reviews already listed
+        listing = document.querySelector('#reviews_listing');
+        while (listing.firstChild) {
+          listing.removeChild(listing.firstChild);
+        }
+
+        //add the reviews
+        for (review in response.reviews){
+          add_review_to_listing(response.reviews[review], response.ratings)
+        }
       }
 
-      //add the reviews
-      for (review in response.reviews){
-        add_review_to_listing(response.reviews[review], response.ratings)
-      }
     }; // end onload
 
     // Add route id to request sent to server

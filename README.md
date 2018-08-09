@@ -33,6 +33,8 @@ Menus are mobile-responsible and can be viewed on mobile devices; however, the d
 
 A test GPX file has been included in the base directory of this project called "SAMPLEGPXFILE.gpx".
 
+The app has limited functionality for non-registered or non-logged in users.  Routes can be viewed including the map and comments and the associated GPX file can be downloaded; however, the user can't post a review.  When viewing a ride, a non-registered user can see the header of the ride with the ride details, but cannot join the ride, see who is confirmed or post any chat comments.  Non-registered or non-logged in users cannot create rides or routes.
+
 The app has been deployed to Heroku at:
 https://mygroupride.herokuapp.com
 
@@ -50,6 +52,8 @@ Javascript is separated into files for each page on the site.  This was done in 
 The Google Maps API is used to display the map on the view route page.  Routes are displayed on maps.  This is done by sending a request to the server in order to get the GPX file's latitude and longitude points in the file.  Back on the client side, the points are added to a polygon which is added to the map.
 
 In order to get Django templating variables into JavaScript, I used <script> tags to capture the {{}} value in a var variable which effectively becomes a global variable in JavaScript.  The other option was to create an AJAX call to Django for the data, but since this data was already on the client side, making another call to the server seemed inefficient.  
+
+
 
 ### Google API Key
 The Google API is restricted centrally to the published domain, so hiding the map API was not necessary.  Despite this, I still tried to hide it and left the code in that I developed.  

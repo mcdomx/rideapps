@@ -8,10 +8,12 @@ document.addEventListener('DOMContentLoaded', () => {
     return;
   }
 
-  setup_chat_elemnts();
-  setup_confirmation_elements();
-  load_confirmed_riders();
-  load_posts(ride_id);
+  if (authenticated == true) {
+    setup_chat_elemnts();
+    setup_confirmation_elements();
+    load_confirmed_riders();
+    load_posts(ride_id);
+  }
 
 });
 // ########################  end DOMContentLoaded ########################

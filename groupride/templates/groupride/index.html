@@ -11,7 +11,6 @@
 
       <div class="panel-group">
       <h4>Confirmed Rides</h4>
-
           {% for ride in upcoming_rides %}
             {% if user in ride.confirmed_riders.all %}
               <div class="ride_header border rounded" style="min-width: 20rem; max-width: 50rem">
