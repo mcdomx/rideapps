@@ -191,7 +191,6 @@ function test_for_null (elements) {
     if (elements[e] == "" || elements[e] == 0) { return (e) }
   }
   return false
-
 } // end test_for_null
 
 //will unhide alert on screen

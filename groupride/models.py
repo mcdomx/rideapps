@@ -15,7 +15,7 @@ class Comment(models.Model):
 class Review(models.Model):
 
     RATINGS = (
-        (None, "no rating given"),
+        ('0', "no rating given"),
         ('1', "Entire route is not recommended and possibly dangerous."),
         ('2', "Sections of route are not recommended."),
         ('3', "Generally accepable. Nothing Special, but safe."),

@@ -20,6 +20,14 @@
       <span class="">&nbsp&nbsp {{route.vertical_feet}} feet</span>
     </div>
 
+    <!-- MAP -->
+    <script>var gpxfile = false</script>
+    {% if route.gpxfile %}
+      <script>var gpxfile = '{{route.gpxfile}}'</script>
+      <div id="map" class="shadow border rounded my-2 px-3 py-3">
+      </div>
+    {% endif %}
+
     <!-- REVIEWS SECTION -->
 
     <!-- REVIEW POST -->
@@ -59,17 +67,18 @@
     </div>
     <!-- END REVIEWS -->
 
-
-
-
-
   </div> <!-- END PAGE CONTAINER -->
 
   <script>
     var route_id = {{ route.id }}
+
   </script>
 
   <script src="../static/groupride/route_listing.js"></script>
+  <!-- API key restricted to site domain no hiding is necessary (per Google) -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA5QNuJ3_v0jbhDHpiuTbRUuDM1ULaha4A&callback=initMap"
+    async defer></script>
+  <!-- <script id="map_source">initMap()</script> -->
 
 
 {% endblock %}

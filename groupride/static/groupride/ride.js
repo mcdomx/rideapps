@@ -86,10 +86,8 @@ function add_rider_to_confirmed(username, rider) {
   const rider_div = document.createElement('div');
   rider_div.className = "confirmed_rider"
   rider_div.innerHTML = rider;
-
-
-
   listing = document.querySelector('#confirmed_list');
+
   //add the newest confirmations to the top
   listing.insertBefore(rider_div, listing.firstChild);
 

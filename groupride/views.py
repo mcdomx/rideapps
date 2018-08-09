@@ -8,7 +8,7 @@ from django import forms
 from django.contrib.auth.models import User
 from .models import Comment, Review, Route, Ride
 from django.core.exceptions import MultipleObjectsReturned
-import json
+import json, os
 from datetime import datetime, date
 
 def index(request):
@@ -77,11 +77,20 @@ def route(request, route_id):
             "route": route,
             "ratings": Review.RATINGS,
         }
+
         return render(request, "groupride/route.html", context)
 
     except Route.DoesNotExist:
         raise Http404('No such route exists. Sorry.')
 
+
+def get_google_api_key(request):
+    print(os.environ)
+    route_id = request.POST.get("route_id")
+    print (os.environ['GOOGLE_MAPS_API_KEY'])
+    context = { "key": os.environ['GOOGLE_MAPS_API_KEY'], }
+    print(context)
+    return JsonResponse(context)
 
 
 def get_reviews(request):
@@ -201,9 +210,6 @@ def routes(request):
     routes = Route.objects.values('id', 'route_name', 'origin', 'miles','vertical_feet')
     context = {'routes': routes,}
     return render(request, "groupride/routes.html", context)
-
-
-
 
 
 # create a new group ride
