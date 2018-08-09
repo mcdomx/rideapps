@@ -94,20 +94,12 @@ function get_google_api_key() {
 // function will get lat and lon coordinates from server.  server parses file and
 // returns a dictionary of points which are added to the map
 function initMap() {
-  // initialize a bogus map before centering on gpx file and drawing route
-   var route1Latlng = new google.maps.LatLng(-33.7610590,18.9616790);
-   var mapOptions = {
-        center: route1Latlng,
-        zoom: 11,
-        mapTypeId: 'terrain'
-   };
-   var map = new google.maps.Map(document.getElementById("map"), mapOptions);
 
    const get_gpx = new XMLHttpRequest();
    get_gpx.open('POST', '/get_route_gpx_points');
    get_gpx.setRequestHeader("X-CSRFToken", CSRF_TOKEN);
    get_gpx.onload = () => {
-     //returns GPX file data
+     //returns GPX file points in a dictionary
      const response = JSON.parse(get_gpx.responseText);
      var route_points = [];
      var map_bounds = new google.maps.LatLngBounds();
@@ -115,7 +107,6 @@ function initMap() {
      // get the track points in the XML file and extract the lat an lon coordinates
      // add the coordinates to the a new g_maps coordinate point
      // then add the g_maps coordinate point to the route_points list
-
      for (p in response) {
 
        var point = new google.maps.LatLng(response[p].lat, response[p].lon);
@@ -128,6 +119,10 @@ function initMap() {
            path: route_points,
            strokeColor: "red",
       });
+
+      // create new map object
+      var mapOptions = { mapTypeId: 'terrain' };
+      var map = new google.maps.Map(document.getElementById("map"), mapOptions);
 
       // set the polygon on the map and set the bounds to match
       route_drawing.setMap(map);

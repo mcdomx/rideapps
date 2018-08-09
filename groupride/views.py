@@ -94,6 +94,8 @@ def get_google_api_key(request):
     return JsonResponse(context)
 
 
+# returns a dictionary of route points for the gpx file
+# associated with the supplied route id
 def get_route_gpx_points(request):
     route_id = request.POST.get("route_id")
     route = Route.objects.get(id = route_id)
@@ -108,10 +110,7 @@ def get_route_gpx_points(request):
 
     return JsonResponse(context)
 
-
-
-
-
+# returns the reviews associated with the supplied route id
 def get_reviews(request):
     route_id = request.POST.get("route_id")
     route = Route.objects.get(pk = route_id)

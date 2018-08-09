@@ -1,8 +1,6 @@
-# project4
+
+# GroupRide (project 4)
 CSCI S-33a - Project 4 - GroupRide
-
-
-# GroupRide
 
 ## Overview
 
@@ -34,7 +32,7 @@ Pages are built using Django Templates and page functionality is driven by Javas
 
 Javascript is separated into files for each page on the site.  This was done in an effort to separate code and keep maintenance isolated to functions of the app.  
 
-Google Maps API is used to display the map on the view route page.  The API is restricted to the published domain, so hiding the map API was not necessary.
+Google Maps API is used to display the map on the view route page.  The API is restricted to the published domain, so hiding the map API was not necessary.  Routes are displayed on maps.  This is done by sending a request to the server in order to get the GPX file's latitude and longitude points in the file.  Back on the client side, the points are added to a polygon which is added to the map.
 
 In order to get Django templating variables into JavaScript, I used <script> tabs to capture the {{}} value in a var variable which effectively becomes a global variable in JavaScript.  The other option was to create an AJAX call to Django for the data, but since this data was already on the client side, making another call to the server seemed inefficient.  
 
@@ -70,3 +68,8 @@ Some additional items that I would like to have accomplished include:
 - Calculating a route's distance and vertical climb statistics from the GPS file.
 - email notifications when a user receives an invitation to a private ride as well as notifications to rider organizers when people opt to join a ride.
 - Include average ratings for rides
+- Create map route polygons on the server and send the polygon to the client instead of all of the route points and letting the client draw the polygon
+
+
+## Summary
+In general, this project went better than I expected.  I was very happy to get the Google Maps working with the route.  This was tricky, but was worth the effort.  I initially intended to use the Strava API, but after researching it further, it did not provide the functions that I expected.  I was careful to plan my effort, with daily checklists and action items to make sure I stayed on track.  There is more functionality that could be added, but in general, I am very happy with the result.
