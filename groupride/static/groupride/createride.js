@@ -25,6 +25,8 @@ function setup_page_elements() {
 
 } //end setup_page_elements()
 
+
+// Initializes form to default state.  Called after creating a new ride.
 function setup_blank_ride () {
 
   //clear list of invited riders
@@ -33,7 +35,7 @@ function setup_blank_ride () {
     listing.removeChild(listing.firstChild);
   }
 
-  //add the ride organizer to the list of invited riders
+  //pre-load the "invited list" with the ride organizer
   rider_list = document.getElementById('invited_riders');
   rider_div = document.createElement('div');
   rider_div.id = user_id;
@@ -47,6 +49,9 @@ function setup_blank_ride () {
 
 }
 
+// Changes the state of the input form between private and public.
+// If the ride was private with invited users and changed to public,
+// invited riders are retained in case the ride is changed to private again.
 function toggle_private_ride() {
 
   // set back to default status of list
@@ -70,6 +75,10 @@ function toggle_private_ride() {
 
 } // toggle_private_ride()
 
+// For private rides, this function will add a selected rider
+// to the screen's list of invited riders.
+// Rider's aren't added to the database object until the ride is sent to
+// the server with the "create" button.
 function add_rider_to_invite_list () {
   invited_riders = document.getElementById('invited_riders');
   rider_list = document.getElementById('rider_list');
@@ -108,7 +117,8 @@ function add_rider_to_invite_list () {
 }
 
 
-// send current cart to server
+// Create a ride on the server with data entered on the screen's form
+// validate's data entry for completeness
 function create_ride() {
 
   document.getElementById('btn_create_ride').disabled = true;
@@ -194,6 +204,7 @@ function test_for_null (elements) {
 } // end test_for_null
 
 //will unhide alert on screen
+//displays confirmation message that ride has been created (or not created)
 //args.  (text divid for alert, bool, bold text, error text)
 //the bool value drives the alert being red or green
 function display_message(divid, success, headline, message) {

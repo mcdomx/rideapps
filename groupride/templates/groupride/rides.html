@@ -13,13 +13,10 @@
     <div class="panel-group">
     <h3>Upcoming Rides</h3>
     {% for ride in upcoming_rides %}
-
       {% if ride.private is True and user in ride.invited_riders.all or ride.private is not True %}
-
-        <a href="/ride/{{ride.id}}">
           <div class="ride_header border rounded" style="min-width: 20rem; max-width: 50rem">
             <div>
-              <h5>Ride: {{ride.ride_name}}
+              <h5>Ride: <a href="/ride/{{ride.id}}">{{ride.ride_name}}</a>
                 {% if ride.private is True %}
                   <span class="badge badge-pill badge-warning">Private</span>
                   {% if user not in ride.confirmed_riders.all %}
@@ -30,20 +27,18 @@
                 {% if user in ride.confirmed_riders.all %}
                   <span class="badge badge-pill badge-success">Confirmed</span>
                 {% endif %}
-
-
               </h5>
               <div>Organizer: {{ride.created_by.first_name|slice:":1" }}.{{ride.created_by.last_name}} </div>
             </div>
             <div>
               <span class="">Departs: {{ ride.ride_date|date:"SHORT_DATE_FORMAT" }} {{ ride.ride_date|time:"TIME_FORMAT" }} </span>
             </div>
-            <a href="/route/{{ride.route.id}}">
-              <div>Route: {{ride.route.route_name}}</div>
+
+              <div>Route: <a href="/route/{{ride.route.id}}">{{ride.route.route_name}}</a></div>
               <div>
                 <span class="">Distance: {{ride.route.miles}} miles </span>
                 <span class="">({{ride.route.vertical_feet}} feet)</span>
-            </a>
+
                 {% if ride.route.gpxfile %}
                   <a href={{ride.route.gpxfile}} download>
                     <span class="badge badge-pill badge-secondary">Download GPX File</span>
@@ -51,7 +46,7 @@
                 {% endif %}
               </div>
           </div>
-        </a>
+
       {% endif %}
 
     {% endfor %}

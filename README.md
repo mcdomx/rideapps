@@ -4,11 +4,24 @@ CSCI S-33a - Project 4 - GroupRide
 
 ## Overview
 
+### Summary of Features
+- Secure user authentication and registration process.
+- Users can create routes with optional GPS file. (only GPX file format is supported)
+- Viewing a route with a GPS file presents a map with the route overlay from the GPS file.
+- Users can download the GPS file directly from the View Route page by clicking the "download GPX file" button.
+- Riders can leave a written review a route and give it a rating.
+- Users can create a ride event where any other user can "sign up" and indicate their attendance.  A ride can also "unjoin" a previously joined ride.
+- Ride's can be marked as "private" where selected riders can be invited.  Only invited riders can see private rides that they are invited to.
+- Riders can post chat-style comments on ride events where others can see the comments and join the chat.
+- A dashboard for riders to see events they have joined as well as unconfirmed invitations to rides.
+- When an admin user logs in, an "Admin" menu item is available that links to database administration.
+
+### Description
 GroupRide is an app that will allow cyclists to share cycling routes and organize group rides that can follow those routes.
 
 Users can review routes and rate them.  When creating a route, a user can upload a GPS file (in GPX file format) which users can download when reviewing the route.  When reviewing a route, the route is displayed on a map if a GPX file was uploaded.
 
-Users can also create organized rides.  These rides can have a route from the saved routes.  Ride organizers can choose to make rides private and invite only selected users.  When rides are private, only invited users can see these rides.  Riders can opt to join any ride, but private rides can only be joined by invited riders.
+Users can also create organized rides.  These rides can have a route from the saved routes.  Ride organizers can choose to make rides private and invite only selected users.  When rides are private, only invited users can see these rides.  Riders can opt to join any ride, but private rides can only be joined by invited riders.  Ride organizers are auto-confirmed for any ride they create.
 
 Upon login, the user is presented with a dashboard consisting of rides that the user has previously chosen to join as well as a list of rides that the user has been invited to, but has not yet confirmed.  From any place that a ride is listed, the user is presented with a button to download a GPX file if it is available.
 
@@ -25,16 +38,21 @@ https://mygroupride.herokuapp.com
 
 (Please note that Heroku limits the amount of time that files are stored on the server, so a GPX file may become stale after a few hours and no longer be available for download.)
 
+
+
 ## Application Design
-The application is built using Django and deployed using Heroku.  Locally, the app was designed using sqlite3 as a database and uses PostgreSQL on Heroku.  Bootstrap is heavily used for elements.
+The application is built using Django and deployed using Heroku.  Locally, the app was designed using sqlite3 as a database and uses PostgreSQL on Heroku.  Bootstrap is heavily used for page formatting and behavior.
 
-Pages are built using Django Templates and page functionality is driven by Javascript.  Care was taken in the design to separate front-end from back-end decisions and behavior.  Front-end functionality that is the responsibility of front-end developers is handled in JavaScript while back-end database work is handled by Python and Django. For example, Django does not drive any HTML output.
+Pages are built using Django Templating and page functionality is driven by Javascript.  Care was taken in the design to separate front-end from back-end decisions and behavior.  Front-end functionality that is the responsibility of front-end developers is handled in JavaScript while back-end database work is handled by Python and Django. For example, Django does not drive any HTML output.
 
-Javascript is separated into files for each page on the site.  This was done in an effort to separate code and keep maintenance isolated to functions of the app.  
+Javascript is separated into files for each page on the site.  This was done in an effort to separate code and keep maintenance isolated to functions of the app.  Some code duplication exists, as a result; however, I felt this was better than a single JavaScript file that contained a large amount of code for all the pages.  
 
-Google Maps API is used to display the map on the view route page.  The API is restricted to the published domain, so hiding the map API was not necessary.  Routes are displayed on maps.  This is done by sending a request to the server in order to get the GPX file's latitude and longitude points in the file.  Back on the client side, the points are added to a polygon which is added to the map.
+The Google Maps API is used to display the map on the view route page.  Routes are displayed on maps.  This is done by sending a request to the server in order to get the GPX file's latitude and longitude points in the file.  Back on the client side, the points are added to a polygon which is added to the map.
 
-In order to get Django templating variables into JavaScript, I used <script> tabs to capture the {{}} value in a var variable which effectively becomes a global variable in JavaScript.  The other option was to create an AJAX call to Django for the data, but since this data was already on the client side, making another call to the server seemed inefficient.  
+In order to get Django templating variables into JavaScript, I used <script> tags to capture the {{}} value in a var variable which effectively becomes a global variable in JavaScript.  The other option was to create an AJAX call to Django for the data, but since this data was already on the client side, making another call to the server seemed inefficient.  
+
+### Google API Key
+The Google API is restricted centrally to the published domain, so hiding the map API was not necessary.  Despite this, I still tried to hide it and left the code in that I developed.  
 
 
 

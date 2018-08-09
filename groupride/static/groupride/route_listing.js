@@ -8,7 +8,11 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 // ########################  end DOMContentLoaded ########################
 
-
+// UNUSED Function:  Attepted to hide Google Maps API key.  This code will
+// still show the API key in a script tag in the page
+// Hiding is determined not to be necessary.  Google MAPS is designed
+// to restrict key by configuring the domains that the key can be used in on
+// the API configuration console.
 function get_google_api_key() {
   // initialize new request
   const get_api_key = new XMLHttpRequest();
@@ -23,7 +27,7 @@ function get_google_api_key() {
     map_url = `https://maps.googleapis.com/maps/api/js?key=${response['key']}&callback=initMap`
     var map_source_tag = document.getElementById('map_source');
     map_source_tag.setAttribute('src', map_url);
-    draw_map();
+    initMap();
 
   }; // end onload
   // Add route id to request sent to server
@@ -34,58 +38,6 @@ function get_google_api_key() {
   get_api_key.send(data);
   return false; // avoid sending the form and creating an HTTP POST request
 }
-
-
-
-// // initMap() run by google api call in HTML
-// // got guidance from:
-// // // https://stackoverflow.com/questions/15829048/best-way-to-import-coordinates-from-gpx-file-and-display-using-google-maps-api#15830122
-// function xinitMap() {
-//   // initialize a bogus map before centering on gpx file and drawing route
-//    var route1Latlng = new google.maps.LatLng(-33.7610590,18.9616790);
-//    var mapOptions = {
-//         center: route1Latlng,
-//         zoom: 11,
-//         mapTypeId: 'terrain'
-//    };
-//    var map = new google.maps.Map(document.getElementById("map"), mapOptions);
-//
-//    const get_gpx = new XMLHttpRequest();
-//    get_gpx.open('GET', gpxfile);
-//    get_gpx.onload = () => {
-//      //returns GPX file data
-//      const response = get_gpx.responseXML;
-//      var route_points = [];
-//      var map_bounds = new google.maps.LatLngBounds();
-//
-//      // get the track points in the XML file and extract the lat an lon coordinates
-//      // add the coordinates to the a new g_maps coordinate point
-//      // then add the g_maps coordinate point to the route_points list
-//      trkpts = response.getElementsByTagName("trkpt");
-//      for (var t = 0; t < trkpts.length; t++) {
-//        var lat = trkpts[t].attributes.lat.value;
-//        var lon = trkpts[t].attributes.lon.value;
-//        var point = new google.maps.LatLng(lat, lon);
-//        route_points.push(point);
-//        map_bounds.extend(point);
-//       }
-//
-//       // create a polygon of the route
-//       var route_drawing = new google.maps.Polyline({
-//            path: route_points,
-//            strokeColor: "red",
-//       });
-//
-//       // set the polygon on the map and set the bounds to match
-//       route_drawing.setMap(map);
-//       map.fitBounds(map_bounds);
-//    } // end on_load()
-//
-//    get_gpx.send();
-//
-// } // end initMap()
-
-
 
 
 // initMap() run by google api call in HTML
@@ -137,15 +89,10 @@ function initMap() {
    get_gpx.send(data);
    return false; // avoid sending the form and creating an HTTP POST request
 
-
-
 } // end initMap()
 
-
-
-
-
-
+// ensures a review has more than 1 character
+// allows the enter key to accept a post
 function setup_review_elements() {
   // enable display post review button when text is entered
   txt = document.querySelector('#txt_add_review');
@@ -166,6 +113,7 @@ function setup_review_elements() {
 
 } // end setup_review_elements()
 
+// adds review to server when Post is clicked or enter key is pressed
 function add_review() {
     const add_review = new XMLHttpRequest();
 

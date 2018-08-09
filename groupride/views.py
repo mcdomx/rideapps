@@ -12,6 +12,8 @@ import json, os
 from datetime import datetime, date
 from xml.dom import minidom
 
+
+# PAGE RENDERING ###############################################################
 def index(request):
     upcoming_rides = Ride.objects.filter(ride_date__gte = datetime.now()).order_by('ride_date')
 
@@ -38,23 +40,16 @@ def create_ride(request):
         return render(request, "groupride/create_ride.html", context)
 
     else:
-        context = {
-            'status': False
-            }
+        context = { 'status': False }
 
     return render(request, "groupride/create_ride.html", context)
 
 
 def create_route(request):
     if request.user.is_authenticated:
-        context = {
-            'status': 'success'
-        }
+        context = { 'status': 'success' }
     else:
-        context = {
-            'status': False
-        }
-
+        context = { 'status': False }
     return render(request, "groupride/create_route.html", context)
 
 
@@ -63,14 +58,25 @@ def login(request):
     return render(request, "groupride/login.html", context)
 
 
+# displays details on a specific ride
 def ride(request,ride_id):
     ride = Ride.objects.get(pk = ride_id)
-    context = {
-        "ride": ride,
-    }
+    context = { "ride": ride, }
     return render(request, "groupride/ride.html", context)
 
 
+# displays a list of all created rides
+def rides(request):
+    upcoming_rides = Ride.objects.filter(ride_date__gte = datetime.now()).order_by('ride_date')
+    past_rides = Ride.objects.filter(ride_date__lt = datetime.now()).order_by('ride_date').reverse()
+    context = {
+        'upcoming_rides': upcoming_rides,
+        'past_rides': past_rides,
+        }
+    return render(request, "groupride/rides.html", context)
+
+
+# displays details on a specific route
 def route(request, route_id):
     try:
         route = Route.objects.get(pk = route_id)
@@ -78,21 +84,22 @@ def route(request, route_id):
             "route": route,
             "ratings": Review.RATINGS,
         }
-
         return render(request, "groupride/route.html", context)
 
     except Route.DoesNotExist:
         raise Http404('No such route exists. Sorry.')
 
 
-def get_google_api_key(request):
-    print(os.environ)
-    route_id = request.POST.get("route_id")
-    print (os.environ['GOOGLE_MAPS_API_KEY'])
-    context = { "key": os.environ['GOOGLE_MAPS_API_KEY'], }
-    print(context)
-    return JsonResponse(context)
+# displays page with list of routes
+def routes(request):
+    routes = Route.objects.values('id', 'route_name', 'origin', 'miles','vertical_feet')
+    context = {'routes': routes,}
+    return render(request, "groupride/routes.html", context)
 
+# END PAGE RENDERING ##########################################################
+
+
+# AJAX REQUESTS ###############################################################
 
 # returns a dictionary of route points for the gpx file
 # associated with the supplied route id
@@ -109,6 +116,7 @@ def get_route_gpx_points(request):
         i += 1
 
     return JsonResponse(context)
+
 
 # returns the reviews associated with the supplied route id
 def get_reviews(request):
@@ -139,6 +147,7 @@ def get_reviews(request):
     return JsonResponse(context)
 
 
+# adds a review to a route
 def add_review(request):
     route_id = request.POST.get("route_id")
     rating = request.POST.get("rating")
@@ -163,6 +172,8 @@ def add_review(request):
 
     return JsonResponse(context)
 
+
+# adds a comment to a ride
 def add_comment(request):
     ride_id = request.POST.get("ride_id")
     text = request.POST.get("text")
@@ -184,18 +195,6 @@ def add_comment(request):
     }
 
     return JsonResponse(context)
-
-
-
-def rides(request):
-    upcoming_rides = Ride.objects.filter(ride_date__gte = datetime.now()).order_by('ride_date')
-    past_rides = Ride.objects.filter(ride_date__lt = datetime.now()).order_by('ride_date').reverse()
-
-    context = {
-        'upcoming_rides': upcoming_rides,
-        'past_rides': past_rides,
-        }
-    return render(request, "groupride/rides.html", context)
 
 
 # change the user's confirmation status for a group ride
@@ -222,12 +221,6 @@ def toggle_confirmation(request):
     }
 
     return JsonResponse(context)
-
-# serve routes.html page with list of routes to be used in templating
-def routes(request):
-    routes = Route.objects.values('id', 'route_name', 'origin', 'miles','vertical_feet')
-    context = {'routes': routes,}
-    return render(request, "groupride/routes.html", context)
 
 
 # create a new group ride
@@ -277,6 +270,10 @@ def create_new_ride(request):
                     r = User.objects.get(username = rider)
                     new_ride.invited_riders.add(r)
 
+            # add ride organizer to confirmed list
+            organizer = User.objects.get(username = request.user.username)
+            new_ride.confirmed_riders.add(organizer)
+
             context = {
                 'success': True,
                 'headline': "Ride created! ",
@@ -284,6 +281,7 @@ def create_new_ride(request):
             }
 
             return JsonResponse(context)
+
 
 # return comments for ride
 def get_ride_comments(request):
@@ -311,6 +309,7 @@ def get_ride_comments(request):
     }
 
     return JsonResponse(context)
+
 
 # return a dictionary of user confirmed for a ride with {username: first initial. lastname}
 def get_confirmed_riders(request):
@@ -372,6 +371,22 @@ def create_new_route(request):
 
         return JsonResponse(context)
 
+# CODE NOT USED.  No need to hide key per Google Maps API Documentation.
+# The API is protected by central restriction in the Google API configuration.
+def get_google_api_key(request):
+
+    context = {
+        'key': os.environ.get("GOOGLE_MAPS_API_KEY"),
+    }
+
+    return JsonResponse(context)
+
+
+
+# END AJAX REQUESTS ############################################################
+
+
+# FORM DATA ####################################################################
 
 # START User registration form
 class RegistrationForm(UserCreationForm):
@@ -388,3 +403,5 @@ class Register(generic.CreateView):
     success_url = reverse_lazy('login')
     template_name = 'registration/register.html'
 # END User Registration Form
+
+# END FORM DATA ################################################################

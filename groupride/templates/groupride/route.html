@@ -5,8 +5,6 @@
 {% block body %}
   <div class="container">
     <h2>Route</h2>
-
-
     <div class="route_header shadow border rounded my-2 px-3 py-3">
       <h4>Route: {{route.route_name}}
         {% if route.gpxfile %}
@@ -76,10 +74,8 @@
 
 
   <script src="../static/groupride/route_listing.js"></script>
-  <!-- API key restricted to site domain no hiding is necessary (per Google) -->
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA5QNuJ3_v0jbhDHpiuTbRUuDM1ULaha4A&callback=initMap"
+  <script id="map_source" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA5QNuJ3_v0jbhDHpiuTbRUuDM1ULaha4A&callback=initMap"
     async defer></script>
-  <!-- <script id="map_source">initMap()</script> -->
 
 
 {% endblock %}
