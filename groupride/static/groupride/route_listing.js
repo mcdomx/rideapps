@@ -50,7 +50,7 @@ function initMap() {
    var map = new google.maps.Map(document.getElementById("map"), mapOptions);
 
    const get_gpx = new XMLHttpRequest();
-   get_gpx.open('GET', `uploads/${gpxfile}`);
+   get_gpx.open('GET', gpxfile);
    get_gpx.onload = () => {
      //returns GPX file data
      const response = get_gpx.responseXML;
