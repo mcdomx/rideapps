@@ -18,6 +18,6 @@ urlpatterns = [
     path("rides/", views.rides, name="rides"),
     path("routes/", views.routes, name="routes"),
     path('register/', views.Register.as_view(), name='register'),
-    path('get_google_api_key', views.get_google_api_key, name='get_google_api_key'),
+    path('get_route_gpx_points', views.get_route_gpx_points, name='get_route_gpx_points'),
 
 ]

@@ -10,6 +10,7 @@ from .models import Comment, Review, Route, Ride
 from django.core.exceptions import MultipleObjectsReturned
 import json, os
 from datetime import datetime, date
+from xml.dom import minidom
 
 def index(request):
     upcoming_rides = Ride.objects.filter(ride_date__gte = datetime.now()).order_by('ride_date')
@@ -91,6 +92,24 @@ def get_google_api_key(request):
     context = { "key": os.environ['GOOGLE_MAPS_API_KEY'], }
     print(context)
     return JsonResponse(context)
+
+
+def get_route_gpx_points(request):
+    route_id = request.POST.get("route_id")
+    route = Route.objects.get(id = route_id)
+
+    gpx_xml = minidom.parse(route.gpxfile)
+    trkpts = gpx_xml.getElementsByTagName('trkpt');
+    context = {}
+    i = 0
+    for p in trkpts:
+        context[i] = {"lat":p.attributes['lat'].value,"lon":p.attributes['lon'].value}
+        i += 1
+
+    return JsonResponse(context)
+
+
+
 
 
 def get_reviews(request):
