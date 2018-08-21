@@ -30,7 +30,7 @@ def index(request):
 
 
 def google_verification(request):
-    return render(request, "google2a19a6d67ad381ed.html")
+    return render(request, "groupride/google2a19a6d67ad381ed.html")
 
 def create_ride(request):
     if request.user.is_authenticated:
