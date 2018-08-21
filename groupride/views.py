@@ -29,6 +29,9 @@ def index(request):
     return render(request, "groupride/index.html", context)
 
 
+def google_verification(request):
+    return render(request, "google2a19a6d67ad381ed.html")
+
 def create_ride(request):
     if request.user.is_authenticated:
         routes = Route.objects.values('id', 'route_name','miles','vertical_feet')

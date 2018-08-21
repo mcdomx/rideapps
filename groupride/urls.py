@@ -20,5 +20,5 @@ urlpatterns = [
     path('register/', views.Register.as_view(), name='register'),
     path('get_route_gpx_points', views.get_route_gpx_points, name='get_route_gpx_points'),
     path('get_google_api_key', views.get_google_api_key, name='get_google_api_key'),
-
+    path('google2a19a6d67ad381ed.html', views.google_verification, name='google_verification'),
 ]
